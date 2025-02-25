@@ -1,26 +1,32 @@
-import React, { useEffect, useRef } from 'react';
-
-import type { RootState } from '../../../app/store';
-import {
-  addPointToRoute,
-  stopAnimation,
-} from '../../../features/routeBuilder/model/routeBuilderSlice';
+import React, { useEffect, useRef, useState } from 'react';
 import Leaflet from 'leaflet';
 import mapImage from '../assets/map.jpg';
 import 'leaflet/dist/leaflet.css';
-import type { Point } from '../../../features/routeBuilder/types/routeBuilderType';
-import { getPredefinedPoints } from '../../../features/routeBuilder/lib/routeBuilderThunks';
 import styles from './MapWidget.module.scss';
-import { useAppDispatch, useAppSelector } from "../../../shared/lib/hooks"
+
+// Моковые данные для предопределённых точек
+// TODO: Замените эти данные на получение из RTK с помощью useAppSelector
+const mockPredefinedPoints: Point[] = [
+  { name: 'Shire', latitude: 756, longitude: 426, description: 'Мирные земли хоббитов' },
+  { name: 'Rivendell', latitude: 776, longitude: 760, description: 'Эльфийский приют' },
+  { name: 'Mordor', latitude: 290, longitude: 1110, description: 'Темная земля Саурона' },
+];
+
+type Point = {
+  name: string;
+  latitude: number;
+  longitude: number;
+  description?: string;
+};
 
 const MAP_WIDTH = 1554;
 const MAP_HEIGHT = 1093;
 
 function MapWidget(): React.JSX.Element {
-  const dispatch = useAppDispatch();
-  const { predefinedPoints, userRoute, result, animating } = useAppSelector(
-    (state: RootState) => state.points,
-  );
+  // TODO: Замените useState на useAppSelector для получения userRoute, animating, result из RTK
+  const [userRoute, setUserRoute] = useState<Point[]>([]);
+  const [animating, setAnimating] = useState(false);
+  const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
   const mapRef = useRef<Leaflet.Map | null>(null);
   const frodoMarkerRef = useRef<Leaflet.Marker | null>(null);
 
@@ -51,25 +57,20 @@ function MapWidget(): React.JSX.Element {
       const { lat, lng } = e.latlng;
       const target = e.originalEvent.target as HTMLElement;
       if (!target.className.includes('leaflet-marker')) {
-        dispatch(
-          addPointToRoute({
-            id: Date.now(),
-            name: `Точка ${(userRoute.length + 1).toString()}`,
-            latitude: lat,
-            longitude: lng,
-          }),
-        );
+        // TODO: Замените setUserRoute
+        // Используйте RTK для добавления точки в маршрут
+        setUserRoute((prev) => [
+          ...prev,
+          { name: `Точка ${prev.length + 1}`, latitude: lat, longitude: lng },
+        ]);
       }
     });
-
-    void dispatch(getPredefinedPoints());
 
     return () => {
       map.remove();
     };
-  }, [dispatch, userRoute.length]);
+  }, []);
 
-  // Обновление предопределенных маркеров
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -81,7 +82,7 @@ function MapWidget(): React.JSX.Element {
       }
     });
 
-    predefinedPoints.forEach((point: Point) => {
+    mockPredefinedPoints.forEach((point: Point) => {
       Leaflet.marker([point.latitude, point.longitude], { opacity: 0.5 })
         .addTo(map)
         .bindPopup(`<b>${point.name}</b><br>${point.description ?? ''}`)
@@ -89,9 +90,8 @@ function MapWidget(): React.JSX.Element {
           (e.target as Leaflet.Marker).openPopup();
         });
     });
-  }, [predefinedPoints]);
+  }, []);
 
-  // Обновление пользовательского маршрута
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -118,7 +118,6 @@ function MapWidget(): React.JSX.Element {
     }
   }, [userRoute]);
 
-  // Анимация Фродо
   useEffect(() => {
     if (!animating || !mapRef.current || !result) return;
 
@@ -135,7 +134,8 @@ function MapWidget(): React.JSX.Element {
     let step = 0;
     const animateFrodo = (): void => {
       if (step >= userRoute.length - 1) {
-        dispatch(stopAnimation());
+        // TODO: Замените setAnimating
+        setAnimating(false);
         return;
       }
 
@@ -161,7 +161,7 @@ function MapWidget(): React.JSX.Element {
     };
 
     animateFrodo();
-  }, [animating, userRoute, result, dispatch]);
+  }, [animating, userRoute, result]);
 
   return <div id="map" className={styles.map} />;
 }

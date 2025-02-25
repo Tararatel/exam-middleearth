@@ -1,27 +1,45 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
-
-import type { RootState } from '../../../app/store';
-import { resetRoute } from '../model/routeBuilderSlice';
-import type { Point } from '../types/routeBuilderType';
-import { verifyRoute } from '../lib/routeBuilderThunks';
+import React, { useState } from 'react';
 import styles from './RouteBuilder.module.scss';
-import { useAppDispatch, useAppSelector } from '../../../shared/lib/hooks';
-import successVideo from '../assets/ok.mp4'
+import successVideo from '../assets/ok.mp4';
 import failedVideo from '../assets/noOk.mp4';
 
-function RouteBuilder(): React.JSX.Element {
-  const dispatch = useAppDispatch();
-  const { userRoute, result, loading, predefinedPoints } = useAppSelector(
-    (state: RootState) => state.points,
-  );
+// Моковые данные для предопределённых точек
+// TODO: Замените эти данные на получение из RTK с помощью useAppSelector
+const mockPredefinedPoints: Point[] = [
+  { name: 'Shire', latitude: 756, longitude: 426, description: 'Мирные земли хоббитов' },
+  { name: 'Rivendell', latitude: 776, longitude: 760, description: 'Эльфийский приют' },
+  { name: 'Mordor', latitude: 290, longitude: 1110, description: 'Темная земля Саурона' },
+];
 
+type Point = {
+  name: string;
+  latitude: number;
+  longitude: number;
+  description?: string;
+};
+
+type Result = {
+  success: boolean;
+  message: string;
+};
+
+function RouteBuilder(): React.JSX.Element {
+  // TODO: Замените useState на useAppSelector для получения userRoute, result, loading из RTK
+  // TODO: Получите predefinedPoints из RTK
+  const [userRoute, setUserRoute] = useState<Point[]>([]);
+  const [result, setResult] = useState<Result | null>(null);
+  const [loading, setLoading] = useState(true);
+  const predefinedPoints = mockPredefinedPoints;
+
+  // TODO: Замените этот обработчик
   const handleCheckRoute = (): void => {
-    void dispatch(verifyRoute(userRoute));
+    console.log('Check route');
   };
 
+  // TODO: Замените этот обработчик
   const handleReset = (): void => {
-    dispatch(resetRoute());
+    console.log('Reset route');
   };
 
   return (
@@ -54,7 +72,7 @@ function RouteBuilder(): React.JSX.Element {
             {result.message}
           </p>
           {result.success ? (
-            <video className={styles.video} autoPlay loop >
+            <video className={styles.video} autoPlay loop>
               <source src={successVideo} type="video/mp4" />
             </video>
           ) : (
