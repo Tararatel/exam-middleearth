@@ -7,7 +7,7 @@ const correctRouteNames = [
   'Lothlorien',
   'Amon Hen',
   'Dead Marshes',
-	'Minas Morgul',
+  'Minas Morgul',
   'Mordor',
 ];
 
