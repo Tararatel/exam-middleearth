@@ -27,6 +27,7 @@ function MapWidget(): React.JSX.Element {
   const [userRoute, setUserRoute] = useState<Point[]>([]);
   const [animating, setAnimating] = useState(false);
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
+	
   const mapRef = useRef<Leaflet.Map | null>(null);
   const frodoMarkerRef = useRef<Leaflet.Marker | null>(null);
 
