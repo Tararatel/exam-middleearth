@@ -1,0 +1,126 @@
+$parchment-light: #f4e9c8;
+$parchment-dark: #d9c9a3;
+$border-brown: #8b6f47;
+$text-brown: #4a2c1a;
+$success-green: #2e7d32;
+$error-red: #d32f2f;
+$button-hover: #8b6f47;
+$button-bg: #6b4e31;
+
+.container {
+  padding: 20px;
+  background: linear-gradient(to bottom, $parchment-light, $parchment-dark);
+  border: 2px solid $border-brown;
+  border-radius: 10px;
+  max-width: 600px;
+	margin: 20px auto 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Cinzel', serif;
+}
+
+.title {
+  color: $text-brown;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 2px $parchment-dark;
+}
+
+.list {
+  list-style-type: none;
+  margin: 0 0 20px 0;
+	padding: 0 10px;
+	max-height: 400px;
+	overflow-y: scroll;
+	scrollbar-width: thin;
+	scrollbar-color: $border-brown $parchment-dark;
+
+	&::-webkit-scrollbar {
+		width: 12px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: $parchment-dark;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: $border-brown;
+		border-radius: 6px;
+		border: 3px solid $parchment-dark;
+	}
+}
+
+.listItem {
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid $border-brown;
+  border-radius: 5px;
+  color: $text-brown;
+  font-size: 16px;
+}
+
+.routeItem {
+  font-style: italic;
+}
+
+.hintItem {
+  .name {
+    font-weight: bold;
+    color: $success-green;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button {
+  background: $button-bg;
+  color: $parchment-light;
+  border: 1px solid $border-brown;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: $button-hover;
+  }
+}
+
+.buttonDisabled {
+  background: $button-bg;
+  color: $parchment-light;
+  border: 1px solid $border-brown;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.result {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px $parchment-dark;
+
+  &.success {
+    color: $success-green;
+  }
+
+  &.error {
+    color: $error-red;
+  }
+}
+
+.video {
+  width: 400px;
+	display: block;
+	margin: 0 auto;
+	margin-top: 10px;
+}

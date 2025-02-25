@@ -1,0 +1,9 @@
+$border-brown: #8b6f47;
+
+.map {
+  height: 800px;
+  width: 1500px;
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.4);
+	border: 1px solid $border-brown;
+  border-radius: 5px;
+}

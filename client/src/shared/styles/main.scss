@@ -1,0 +1,21 @@
+@import './normalize';
+@import './font';
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'TolkienCyr', sans-serif;
+}
+
+body {
+  background: url('../assets/background.webp') no-repeat center center fixed;
+	background-size: cover;
+}
+

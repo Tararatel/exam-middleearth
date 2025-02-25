@@ -1,0 +1,14 @@
+.title {
+  font-size: 42px;
+  margin: 0;
+  padding: 15px;
+  text-align: center;
+  color: gold;
+  text-shadow: 3px 3px 3px #002823, -1px 0 3px #002823;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
