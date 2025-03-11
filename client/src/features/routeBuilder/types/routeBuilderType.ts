@@ -13,16 +13,18 @@ export const resultSchema = z.object({
   message: z.string(),
 });
 
-export type Point = z.infer<typeof pointSchema>;
+export type PredefinedPoints = z.infer<typeof pointSchema>;
+
+export type UserRoute = Omit<PredefinedPoints, 'id'>;
 
 export type RouteState = {
-  userRoute: Point[];
+  userRoute: UserRoute[];
   result: { success: boolean; message: string } | null;
   animating: boolean;
 };
 
 export type PointsState = {
-  predefinedPoints: Point[];
+  predefinedPoints: PredefinedPoints[];
   loading: boolean;
   error: string | null;
 } & RouteState;

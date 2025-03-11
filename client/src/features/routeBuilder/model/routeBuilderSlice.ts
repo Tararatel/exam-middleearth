@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PointsState } from '../types/routeBuilderType';
-import type { Point } from '../types/routeBuilderType';
+import type { PointsState, UserRoute } from '../types/routeBuilderType';
 import { getPredefinedPoints, verifyRoute } from '../lib/routeBuilderThunks';
+
 
 const initialState: PointsState = {
   predefinedPoints: [],
@@ -16,7 +16,7 @@ const pointsSlice = createSlice({
   name: 'points',
   initialState,
   reducers: {
-    addPointToRoute: (state, action: { payload: Point }) => {
+    addPointToRoute: (state, action: { payload: UserRoute }) => {
       state.userRoute.push(action.payload);
     },
     resetRoute: (state) => {

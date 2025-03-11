@@ -8,7 +8,7 @@ import {
 import Leaflet from 'leaflet';
 import mapImage from '../assets/map.jpg';
 import 'leaflet/dist/leaflet.css';
-import type { Point } from '../../../features/routeBuilder/types/routeBuilderType';
+import type { PredefinedPoints, UserRoute } from '../../../features/routeBuilder/types/routeBuilderType';
 import { getPredefinedPoints } from '../../../features/routeBuilder/lib/routeBuilderThunks';
 import styles from './MapWidget.module.scss';
 import { useAppDispatch, useAppSelector } from "../../../shared/lib/hooks"
@@ -53,7 +53,7 @@ function MapWidget(): React.JSX.Element {
       if (!target.className.includes('leaflet-marker')) {
         dispatch(
           addPointToRoute({
-            id: Date.now(),
+            // id: Date.now(),
             name: `Точка ${(userRoute.length + 1).toString()}`,
             latitude: lat,
             longitude: lng,
@@ -81,7 +81,7 @@ function MapWidget(): React.JSX.Element {
       }
     });
 
-    predefinedPoints.forEach((point: Point) => {
+    predefinedPoints.forEach((point: PredefinedPoints) => {
       Leaflet.marker([point.latitude, point.longitude], { opacity: 0.5 })
         .addTo(map)
         .bindPopup(`<b>${point.name}</b><br>${point.description ?? ''}`)
@@ -106,14 +106,16 @@ function MapWidget(): React.JSX.Element {
       }
     });
 
-    userRoute.forEach((point: Point, index: number) => {
+    userRoute.forEach((point: UserRoute, index: number) => {
       Leaflet.marker([point.latitude, point.longitude])
         .addTo(map)
         .bindPopup(`Точка ${(index + 1).toString()}`);
     });
 
     if (userRoute.length > 1) {
-      const latlngs = userRoute.map((p: Point) => [p.latitude, p.longitude] as [number, number]);
+      const latlngs = userRoute.map(
+        (p: UserRoute) => [p.latitude, p.longitude] as [number, number],
+      );
       Leaflet.polyline(latlngs, { color: 'red' }).addTo(map);
     }
   }, [userRoute]);
