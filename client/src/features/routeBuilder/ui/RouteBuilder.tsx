@@ -3,21 +3,33 @@ import React, { useState } from 'react';
 import styles from './RouteBuilder.module.scss';
 import successVideo from '../assets/ok.mp4';
 import failedVideo from '../assets/noOk.mp4';
+import type { PredefinedPoints, UserRoute } from '../types/routeBuilderType';
 
 // Моковые данные для предопределённых точек
 // TODO: Замените эти данные на получение из RTK с помощью useAppSelector
-const mockPredefinedPoints: Point[] = [
-  { name: 'Shire', latitude: 756, longitude: 426, description: 'Мирные земли хоббитов' },
-  { name: 'Rivendell', latitude: 776, longitude: 760, description: 'Эльфийский приют' },
-  { name: 'Mordor', latitude: 290, longitude: 1110, description: 'Темная земля Саурона' },
+const mockPredefinedPoints: PredefinedPoints[] = [
+  {
+    id: Date.now(),
+    name: 'Shire',
+    latitude: 756,
+    longitude: 426,
+    description: 'Мирные земли хоббитов',
+  },
+  {
+    id: Date.now(),
+    name: 'Rivendell',
+    latitude: 776,
+    longitude: 760,
+    description: 'Эльфийский приют',
+  },
+  {
+    id: Date.now(),
+    name: 'Mordor',
+    latitude: 290,
+    longitude: 1110,
+    description: 'Темная земля Саурона',
+  },
 ];
-
-type Point = {
-  name: string;
-  latitude: number;
-  longitude: number;
-  description?: string;
-};
 
 type Result = {
   success: boolean;
@@ -27,7 +39,7 @@ type Result = {
 function RouteBuilder(): React.JSX.Element {
   // TODO: Замените useState на useAppSelector для получения userRoute, result, loading из RTK
   // TODO: Получите predefinedPoints из RTK
-  const [userRoute, setUserRoute] = useState<Point[]>([]);
+  const [userRoute, setUserRoute] = useState<UserRoute[]>([]);
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(true);
   const predefinedPoints = mockPredefinedPoints;
@@ -46,7 +58,7 @@ function RouteBuilder(): React.JSX.Element {
     <div className={styles.container}>
       <h3 className={styles.title}>Путь Хранителя Кольца</h3>
       <ul className={styles.list}>
-        {userRoute.map((point: Point, index: number) => (
+        {userRoute.map((point: UserRoute, index: number) => (
           <li className={`${styles.listItem} ${styles.routeItem}`} key={index}>
             {`Шаг ${(index + 1).toFixed(0)}: [${point.latitude.toFixed(
               0,
@@ -84,7 +96,7 @@ function RouteBuilder(): React.JSX.Element {
       )}
       <h3 className={styles.title}>Знания Средиземья</h3>
       <ul className={styles.list}>
-        {predefinedPoints.map((point: Point) => (
+        {predefinedPoints.map((point: UserRoute) => (
           <li className={styles.listItem} key={point.name}>
             <span className={styles.name}>{point.name}</span>
             {`: [${point.latitude.toFixed(0)}, ${point.longitude.toFixed(0)}]`}
