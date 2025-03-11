@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../../shared/api';
-import type { PredefinedPoints } from '../types/routeBuilderType';
+import type { PredefinedPoints, UserRoute } from '../types/routeBuilderType';
 import { pointSchema, resultSchema } from '../types/routeBuilderType';
 
 export const getPredefinedPoints = createAsyncThunk<
@@ -20,11 +20,11 @@ export const getPredefinedPoints = createAsyncThunk<
 
 export const verifyRoute = createAsyncThunk<
   { success: boolean; message: string },
-  PredefinedPoints[],
+	UserRoute[],
   { rejectValue: string }
 >('points/verifyRoute', async (route, { rejectWithValue }) => {
   try {
-    const response = await axios.post('/check-route', { route });
+    const response = await axios.post('/check-route',  route );
 
     return resultSchema.parse(response.data);
   } catch (error) {

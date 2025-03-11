@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { RootState } from '../../../app/store';
 import { resetRoute } from '../model/routeBuilderSlice';
-import type { Point } from '../types/routeBuilderType';
+import type { UserRoute } from '../types/routeBuilderType';
 import { verifyRoute } from '../lib/routeBuilderThunks';
 import styles from './RouteBuilder.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../shared/lib/hooks';
@@ -28,7 +28,7 @@ function RouteBuilder(): React.JSX.Element {
     <div className={styles.container}>
       <h3 className={styles.title}>Путь Хранителя Кольца</h3>
       <ul className={styles.list}>
-        {userRoute.map((point: Point, index: number) => (
+        {userRoute.map((point: UserRoute, index: number) => (
           <li className={`${styles.listItem} ${styles.routeItem}`} key={index}>
             {`Шаг ${(index + 1).toFixed(0)}: [${point.latitude.toFixed(
               0,
@@ -54,7 +54,7 @@ function RouteBuilder(): React.JSX.Element {
             {result.message}
           </p>
           {result.success ? (
-            <video className={styles.video} autoPlay loop >
+            <video className={styles.video} autoPlay loop>
               <source src={successVideo} type="video/mp4" />
             </video>
           ) : (
@@ -66,7 +66,7 @@ function RouteBuilder(): React.JSX.Element {
       )}
       <h3 className={styles.title}>Знания Средиземья</h3>
       <ul className={styles.list}>
-        {predefinedPoints.map((point: Point) => (
+        {predefinedPoints.map((point: UserRoute) => (
           <li className={styles.listItem} key={point.name}>
             <span className={styles.name}>{point.name}</span>
             {`: [${point.latitude.toFixed(0)}, ${point.longitude.toFixed(0)}]`}

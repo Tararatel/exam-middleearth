@@ -12,7 +12,7 @@ const pointController = {
 
   async checkRoute(req, res) {
     try {
-      const userRoute = req.body.route;
+      const userRoute = req.body;
       const result = await pointService.checkUserRoute(userRoute);
       res.status(200).json(result);
     } catch (error) {
