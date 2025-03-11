@@ -3,31 +3,43 @@ import Leaflet from 'leaflet';
 import mapImage from '../assets/map.jpg';
 import 'leaflet/dist/leaflet.css';
 import styles from './MapWidget.module.scss';
+import type { PredefinedPoints, UserRoute } from '../../../features/routeBuilder/types/routeBuilderType';
 
 // Моковые данные для предопределённых точек
 // TODO: Замените эти данные на получение из RTK с помощью useAppSelector
-const mockPredefinedPoints: Point[] = [
-  { name: 'Shire', latitude: 756, longitude: 426, description: 'Мирные земли хоббитов' },
-  { name: 'Rivendell', latitude: 776, longitude: 760, description: 'Эльфийский приют' },
-  { name: 'Mordor', latitude: 290, longitude: 1110, description: 'Темная земля Саурона' },
+const mockPredefinedPoints: PredefinedPoints[] = [
+  {
+    id: Date.now(),
+    name: 'Shire',
+    latitude: 756,
+    longitude: 426,
+    description: 'Мирные земли хоббитов',
+  },
+  {
+    id: Date.now(),
+    name: 'Rivendell',
+    latitude: 776,
+    longitude: 760,
+    description: 'Эльфийский приют',
+  },
+  {
+    id: Date.now(),
+    name: 'Mordor',
+    latitude: 290,
+    longitude: 1110,
+    description: 'Темная земля Саурона',
+  },
 ];
-
-type Point = {
-  name: string;
-  latitude: number;
-  longitude: number;
-  description?: string;
-};
 
 const MAP_WIDTH = 1554;
 const MAP_HEIGHT = 1093;
 
 function MapWidget(): React.JSX.Element {
   // TODO: Замените useState на useAppSelector для получения userRoute, animating, result из RTK
-  const [userRoute, setUserRoute] = useState<Point[]>([]);
+  const [userRoute, setUserRoute] = useState<UserRoute[]>([]);
   const [animating, setAnimating] = useState(false);
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
-	
+
   const mapRef = useRef<Leaflet.Map | null>(null);
   const frodoMarkerRef = useRef<Leaflet.Marker | null>(null);
 
@@ -62,7 +74,7 @@ function MapWidget(): React.JSX.Element {
         // Используйте RTK для добавления точки в маршрут
         setUserRoute((prev) => [
           ...prev,
-          { name: `Точка ${prev.length + 1}`, latitude: lat, longitude: lng },
+          { name: `Точка ${(prev.length + 1).toString()}`, latitude: lat, longitude: lng },
         ]);
       }
     });
@@ -83,7 +95,7 @@ function MapWidget(): React.JSX.Element {
       }
     });
 
-    mockPredefinedPoints.forEach((point: Point) => {
+    mockPredefinedPoints.forEach((point: PredefinedPoints) => {
       Leaflet.marker([point.latitude, point.longitude], { opacity: 0.5 })
         .addTo(map)
         .bindPopup(`<b>${point.name}</b><br>${point.description ?? ''}`)
@@ -107,14 +119,16 @@ function MapWidget(): React.JSX.Element {
       }
     });
 
-    userRoute.forEach((point: Point, index: number) => {
+    userRoute.forEach((point: UserRoute, index: number) => {
       Leaflet.marker([point.latitude, point.longitude])
         .addTo(map)
         .bindPopup(`Точка ${(index + 1).toString()}`);
     });
 
     if (userRoute.length > 1) {
-      const latlngs = userRoute.map((p: Point) => [p.latitude, p.longitude] as [number, number]);
+      const latlngs = userRoute.map(
+        (p: UserRoute) => [p.latitude, p.longitude] as [number, number],
+      );
       Leaflet.polyline(latlngs, { color: 'red' }).addTo(map);
     }
   }, [userRoute]);
